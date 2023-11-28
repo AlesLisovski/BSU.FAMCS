@@ -14,10 +14,18 @@ public class Main {
 
         ConsoleUserInterface.SetInputFileSettings(input, InputFileSettings);
         ConsoleUserInterface.ReadInputFile(InputFileSettings, input);
+//
+//        MatchParserByStack.ParseTxt(InputFileSettings,OutputFileSettings);
+//
+//        ConsoleUserInterface.SetOutputFileSettings(input, OutputFileSettings);
+//        ConsoleUserInterface.WriteOutputFile(OutputFileSettings,input);
 
-        MatchParser.ParseTxt(InputFileSettings,OutputFileSettings);
+        MatchParserDirector matchParserDirector = new MatchParserDirector();
+        matchParserDirector.SetBuilder(new MatchParserByLib());
+
+        matchParserDirector.GetAnswer(InputFileSettings,OutputFileSettings);
 
         ConsoleUserInterface.SetOutputFileSettings(input, OutputFileSettings);
-        ConsoleUserInterface.WriteOutputFile(OutputFileSettings,input);
+        ConsoleUserInterface.WriteOutputFile(OutputFileSettings, input);
     }
 }

@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Vector;
 
-public class MatchParser {
+public class MatchParserByStack extends MatchParserBuilder {
     private final HashMap<String, Double> variables;
 
-    public MatchParser() {
+    public MatchParserByStack() {
         variables = new HashMap<String, Double>();
     }
 
@@ -21,15 +21,6 @@ public class MatchParser {
             return 0.0;
         }
         return variables.get(variableName);
-    }
-
-    public double Parse(String s) throws Exception {
-        Result result = PlusMinus(s);
-        if (!result.rest.isEmpty()) {
-            System.err.println("Error: can't full parse");
-            System.err.println("rest: " + result.rest);
-        }
-        return result.acc;
     }
 
     private Result PlusMinus(String s) throws Exception {
@@ -149,7 +140,17 @@ public class MatchParser {
         return r;
     }
 
-    public static void ParseTxt(FileSettings InputFileSettings, FileSettings OutputFileSettings) throws Exception {
+    public double Parse(String s) throws Exception {
+        Result result = PlusMinus(s);
+        if (!result.rest.isEmpty()) {
+            System.err.println("Error: can't full parse");
+            System.err.println("rest: " + result.rest);
+        }
+        return result.acc;
+    }
+
+    @Override
+    public void ParseTxt(FileSettings InputFileSettings, FileSettings OutputFileSettings) throws Exception {
         String[] lines = InputFileSettings.txt_info.split("\n");
         Vector<String> vec = new Vector<>(Arrays.asList(lines));
 
@@ -158,18 +159,12 @@ public class MatchParser {
             vec.set(i, vec.get(i).replace(" ", ""));
             vec.set(i, vec.get(i).replace("\n", ""));
             vec.set(i, vec.get(i).replace("\r", ""));
-            MatchParser p = new MatchParser();
+            MatchParserByStack p = new MatchParserByStack();
             s.append(String.valueOf(p.Parse(vec.get(i)))).append("\n");
         }
 
         OutputFileSettings.txt_info = String.valueOf(s);
         OutputFileSettings.byte_info = FileOperations.StringToBytes(OutputFileSettings.txt_info);
     }
-
-
-//    public double ParseByLib()
-//    {
-//
-//    }
 
 }
