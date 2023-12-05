@@ -35,7 +35,7 @@ class XmlParserTest {
                 </MathematicalEquations>""";
 
         XmlParser parser = new XmlParser();
-        assertEquals(parser.ParseString(xml_str), str);
+        assertEquals(parser.ParseStringByDOM(xml_str), str);
     }
 
     @Test
@@ -51,7 +51,7 @@ class XmlParserTest {
                 """;
 
         XmlParser parser = new XmlParser();
-        assertEquals(str, parser.ParseFile(file_name));
+        assertEquals(str, parser.ParseFileByDOM(file_name));
     }
 
     @Test

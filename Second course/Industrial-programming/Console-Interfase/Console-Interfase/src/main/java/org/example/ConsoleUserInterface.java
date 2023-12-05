@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class ConsoleUserInterface {
     private static final String KEY = "1234password4321";
 
-    public static void SetInputFileSettings(Scanner input, FileSettings InputFileSettings) {
+    public static void SetInputFileSettings(Scanner input, FileSettings InputFileSettings) throws Exception {
         String check;
 
         System.out.println("Is the input file archived? (Y/n) ");
@@ -21,6 +21,10 @@ public class ConsoleUserInterface {
         System.out.println("Enter input file type? (.txt/.xml/.json) ");
         InputFileSettings.file_type = input.nextLine();
 
+        if (!InputFileSettings.file_type.equals(".txt") && !InputFileSettings.file_type.equals(".json") && !InputFileSettings.file_type.equals(".xml")) {
+            throw new Exception("Error file type");
+        }
+
         if (InputFileSettings.check_file_zip) {
             System.out.println("Enter input archive name :");
             InputFileSettings.archive_name = input.nextLine();
@@ -30,7 +34,7 @@ public class ConsoleUserInterface {
         InputFileSettings.file_name = input.nextLine();
     }
 
-    public static void SetOutputFileSettings(Scanner input, FileSettings OutputFileSettings) {
+    public static void SetOutputFileSettings(Scanner input, FileSettings OutputFileSettings) throws Exception {
         System.out.println("\nIs the output file archived? (Y/n) ");
         String check = input.nextLine();
         OutputFileSettings.check_file_zip = check.equals("Y");
@@ -42,6 +46,10 @@ public class ConsoleUserInterface {
         System.out.println("Enter output file type? (.txt/.xml/.json) ");
         OutputFileSettings.file_type = input.nextLine();
 
+        if (!OutputFileSettings.file_type.equals(".txt") && !OutputFileSettings.file_type.equals(".json") && !OutputFileSettings.file_type.equals(".xml")) {
+            throw new Exception("Error file type");
+        }
+
         if (OutputFileSettings.check_file_zip) {
             System.out.println("Enter output archive name :");
             OutputFileSettings.archive_name = input.nextLine();
@@ -52,6 +60,19 @@ public class ConsoleUserInterface {
     }
 
     public static void ReadInputFile(FileSettings InputFileSettings, Scanner input) throws Exception {
+        boolean json_choice = true;
+        boolean xml_choice = true;
+
+        if (InputFileSettings.file_type.equals(".json")) {
+            System.out.println("Select a parser for the json file: by json parser(Yes), or by reading line by line(no) (Y/n) ");
+            json_choice = input.nextLine().equals("Y");
+        }
+
+        if (InputFileSettings.file_type.equals(".xml")) {
+            System.out.println("Select a parser for the xml file: by DOM(Yes), or by reading line by line(no) (Y/n) ");
+            xml_choice = input.nextLine().equals("Y");
+        }
+
         if (InputFileSettings.check_file_zip && InputFileSettings.check_file_encoding) {
             System.out.println("Is the input file first archived and then encrypted(Yes) or vice versa(no)? (Y/n)");
             String check = input.nextLine();
@@ -70,11 +91,8 @@ public class ConsoleUserInterface {
                     InputFileSettings.byte_info = FileEncryption.DecryptBytes(KEY, InputFileSettings.byte_info);
                     InputFileSettings.txt_info = FileOperations.BytesToString(InputFileSettings.byte_info);
 
-                    System.out.println("Select a parser for the json file: by json parser(Yes), or by reading line by line(no) (Y/n) ");
-                    boolean choice = input.nextLine().equals("Y");
-
                     JsonParser parser = new JsonParser();
-                    if (choice) {
+                    if (json_choice) {
                         InputFileSettings.txt_info = parser.ParseStringByParser(InputFileSettings.txt_info);
                     } else {
                         InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
@@ -86,11 +104,8 @@ public class ConsoleUserInterface {
                     InputFileSettings.byte_info = FileEncryption.DecryptBytes(KEY, InputFileSettings.byte_info);
                     InputFileSettings.txt_info = FileOperations.BytesToString(InputFileSettings.byte_info);
 
-                    System.out.println("Select a parser for the xml file: by DOM(Yes), or by reading line by line(no) (Y/n) ");
-                    boolean choice = input.nextLine().equals("Y");
-
                     XmlParser parser = new XmlParser();
-                    if (choice) {
+                    if (xml_choice) {
                         InputFileSettings.txt_info = parser.ParseStringByDOM(InputFileSettings.txt_info);
                     } else {
                         InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
@@ -107,13 +122,21 @@ public class ConsoleUserInterface {
                 InputFileSettings.txt_info = FileEncryption.DecryptFileToString(KEY, InputFileSettings.file_name);
 
                 JsonParser parser = new JsonParser();
-                InputFileSettings.txt_info = parser.ParseStringByParser(InputFileSettings.txt_info);
+                if (json_choice) {
+                    InputFileSettings.txt_info = parser.ParseStringByParser(InputFileSettings.txt_info);
+                } else {
+                    InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
+                }
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             } else if (Objects.equals(InputFileSettings.file_type, ".xml")) {
                 InputFileSettings.txt_info = FileEncryption.DecryptFileToString(KEY, InputFileSettings.file_name);
 
                 XmlParser parser = new XmlParser();
-                InputFileSettings.txt_info = parser.ParseStringByDOM(InputFileSettings.txt_info);
+                if (xml_choice) {
+                    InputFileSettings.txt_info = parser.ParseStringByDOM(InputFileSettings.txt_info);
+                } else {
+                    InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
+                }
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             }
         } else if (InputFileSettings.check_file_zip) {
@@ -124,13 +147,21 @@ public class ConsoleUserInterface {
                 InputFileSettings.txt_info = ArchiveManager.readStringFromInFileFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
 
                 JsonParser parser = new JsonParser();
-                InputFileSettings.txt_info = parser.ParseStringByParser(InputFileSettings.txt_info);
+                if (json_choice) {
+                    InputFileSettings.txt_info = parser.ParseStringByParser(InputFileSettings.txt_info);
+                } else {
+                    InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
+                }
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             } else if (Objects.equals(InputFileSettings.file_type, ".xml")) {
                 InputFileSettings.txt_info = ArchiveManager.readStringFromInFileFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
 
                 XmlParser parser = new XmlParser();
-                InputFileSettings.txt_info = parser.ParseStringByDOM(InputFileSettings.txt_info);
+                if (xml_choice) {
+                    InputFileSettings.txt_info = parser.ParseStringByDOM(InputFileSettings.txt_info);
+                } else {
+                    InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
+                }
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             }
         } else {
@@ -139,11 +170,20 @@ public class ConsoleUserInterface {
                 InputFileSettings.txt_info = FileOperations.readStringFromFile(InputFileSettings.file_name);
             } else if (Objects.equals(InputFileSettings.file_type, ".json")) {
                 JsonParser parser = new JsonParser();
-                InputFileSettings.txt_info = parser.ParseFileByParser(InputFileSettings.file_name);
+
+                if (json_choice) {
+                    InputFileSettings.txt_info = parser.ParseFileByParser(InputFileSettings.file_name);
+                } else {
+                    InputFileSettings.txt_info = parser.ParseFileByReadingLineByLine(InputFileSettings.file_name);
+                }
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             } else if (Objects.equals(InputFileSettings.file_type, ".xml")) {
                 XmlParser parser = new XmlParser();
-                InputFileSettings.txt_info = parser.ParseFileByDOM(InputFileSettings.file_name);
+                if (xml_choice) {
+                    InputFileSettings.txt_info = parser.ParseFileByDOM(InputFileSettings.file_name);
+                } else {
+                    InputFileSettings.txt_info = parser.ParseFileByReadingLineByLine(InputFileSettings.file_name);
+                }
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             }
         }

@@ -15,10 +15,9 @@ public class MatchParserByStack extends MatchParserBuilder {
         variables.put(variableName, variableValue);
     }
 
-    public Double getVariable(String variableName) {
+    public Double getVariable(String variableName) throws Exception {
         if (!variables.containsKey(variableName)) {
-            System.err.println("Error: Try get unexists variable '" + variableName + "'");
-            return 0.0;
+            throw new Exception("Error: Try get unexists variable '" + variableName + "'");
         }
         return variables.get(variableName);
     }
@@ -50,7 +49,7 @@ public class MatchParserByStack extends MatchParserBuilder {
             if (!r.rest.isEmpty() && r.rest.charAt(0) == ')') {
                 r.rest = r.rest.substring(1);
             } else {
-                System.err.println("Error: not close bracket");
+                throw new Exception("Error: not close bracket");
             }
             return r;
         }
@@ -124,7 +123,7 @@ public class MatchParserByStack extends MatchParserBuilder {
         return new Result(dPart, restPart);
     }
 
-    private Result processFunction(String func, Result r) {
+    private Result processFunction(String func, Result r) throws Exception {
         switch (func) {
             case "sin" -> {
                 return new Result(Math.sin(Math.toRadians(r.acc)), r.rest);
@@ -135,16 +134,14 @@ public class MatchParserByStack extends MatchParserBuilder {
             case "tan" -> {
                 return new Result(Math.tan(Math.toRadians(r.acc)), r.rest);
             }
-            default -> System.err.println("function '" + func + "' is not defined");
+            default -> throw new IllegalStateException("Unexpected value: " + func);
         }
-        return r;
     }
 
     public double Parse(String s) throws Exception {
         Result result = PlusMinus(s);
         if (!result.rest.isEmpty()) {
-            System.err.println("Error: can't full parse");
-            System.err.println("rest: " + result.rest);
+            throw new Exception("Error: can't fully parse. Rest: " + result.rest);
         }
         return result.acc;
     }
