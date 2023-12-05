@@ -70,16 +70,32 @@ public class ConsoleUserInterface {
                     InputFileSettings.byte_info = FileEncryption.DecryptBytes(KEY, InputFileSettings.byte_info);
                     InputFileSettings.txt_info = FileOperations.BytesToString(InputFileSettings.byte_info);
 
+                    System.out.println("Select a parser for the json file: by json parser(Yes), or by reading line by line(no) (Y/n) ");
+                    boolean choice = input.nextLine().equals("Y");
+
                     JsonParser parser = new JsonParser();
-                    InputFileSettings.txt_info = parser.ParseStringByParser(InputFileSettings.txt_info);
+                    if (choice) {
+                        InputFileSettings.txt_info = parser.ParseStringByParser(InputFileSettings.txt_info);
+                    } else {
+                        InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
+                    }
+
                     InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
                 } else if (Objects.equals(InputFileSettings.file_type, ".xml")) {
                     InputFileSettings.byte_info = ArchiveManager.readBytesFromFileInFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
                     InputFileSettings.byte_info = FileEncryption.DecryptBytes(KEY, InputFileSettings.byte_info);
                     InputFileSettings.txt_info = FileOperations.BytesToString(InputFileSettings.byte_info);
 
+                    System.out.println("Select a parser for the xml file: by DOM(Yes), or by reading line by line(no) (Y/n) ");
+                    boolean choice = input.nextLine().equals("Y");
+
                     XmlParser parser = new XmlParser();
-                    InputFileSettings.txt_info = parser.ParseString(InputFileSettings.txt_info);
+                    if (choice) {
+                        InputFileSettings.txt_info = parser.ParseStringByDOM(InputFileSettings.txt_info);
+                    } else {
+                        InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
+                    }
+
                     InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
                 }
             }
@@ -97,7 +113,7 @@ public class ConsoleUserInterface {
                 InputFileSettings.txt_info = FileEncryption.DecryptFileToString(KEY, InputFileSettings.file_name);
 
                 XmlParser parser = new XmlParser();
-                InputFileSettings.txt_info = parser.ParseString(InputFileSettings.txt_info);
+                InputFileSettings.txt_info = parser.ParseStringByDOM(InputFileSettings.txt_info);
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             }
         } else if (InputFileSettings.check_file_zip) {
@@ -114,7 +130,7 @@ public class ConsoleUserInterface {
                 InputFileSettings.txt_info = ArchiveManager.readStringFromInFileFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
 
                 XmlParser parser = new XmlParser();
-                InputFileSettings.txt_info = parser.ParseString(InputFileSettings.txt_info);
+                InputFileSettings.txt_info = parser.ParseStringByDOM(InputFileSettings.txt_info);
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             }
         } else {
@@ -127,7 +143,7 @@ public class ConsoleUserInterface {
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             } else if (Objects.equals(InputFileSettings.file_type, ".xml")) {
                 XmlParser parser = new XmlParser();
-                InputFileSettings.txt_info = parser.ParseFile(InputFileSettings.file_name);
+                InputFileSettings.txt_info = parser.ParseFileByDOM(InputFileSettings.file_name);
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             }
         }
@@ -192,6 +208,22 @@ public class ConsoleUserInterface {
                 FileOperations.WriteStringToFile(parser.makeXml(OutputFileSettings.txt_info), OutputFileSettings.file_name);
             }
         }
+    }
+
+    public static void ParseMathematicalExpressions(FileSettings InputFileSettings, FileSettings OutputFileSettings, Scanner input) throws Exception {
+        MatchParserDirector matchParserDirector = new MatchParserDirector();
+
+        System.out.println("Select a match parser : MatchParserByStack(0), MatchParserByLib(1), or MatchParserByRegular(2) (0/1/2) ");
+        String choice = input.nextLine();
+
+        switch (choice) {
+            case "0" -> matchParserDirector.SetBuilder(new MatchParserByStack());
+            case "1" -> matchParserDirector.SetBuilder(new MatchParserByLib());
+            case "2" -> matchParserDirector.SetBuilder(new MatchParserByRegular());
+            default -> throw new IllegalStateException("Unexpected value: " + choice);
+        }
+
+        matchParserDirector.GetAnswer(InputFileSettings, OutputFileSettings);
     }
 
 }

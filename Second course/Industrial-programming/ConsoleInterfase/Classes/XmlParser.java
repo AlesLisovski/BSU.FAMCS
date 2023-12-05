@@ -11,18 +11,15 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class XmlParser {
 
-    public String ParseFile(String file_name) throws IOException, ParseException, ParserConfigurationException, SAXException {
+    public String ParseFileByDOM(String file_name) throws IOException, ParseException, ParserConfigurationException, SAXException {
         File file = new File(file_name);
         DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = dBuilder.parse(file);
@@ -43,7 +40,7 @@ public class XmlParser {
         return String.valueOf(equations).replace("\r", "");
     }
 
-    public String ParseString(String xml_string) throws IOException, ParseException, ParserConfigurationException, SAXException {
+    public String ParseStringByDOM(String xml_string) throws IOException, ParseException, ParserConfigurationException, SAXException {
         DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputStream is = new ByteArrayInputStream(xml_string.getBytes());
         Document doc = dBuilder.parse(is);

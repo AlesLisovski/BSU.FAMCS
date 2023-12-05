@@ -14,16 +14,8 @@ public class Main {
 
         ConsoleUserInterface.SetInputFileSettings(input, InputFileSettings);
         ConsoleUserInterface.ReadInputFile(InputFileSettings, input);
-//
-//        MatchParserByStack.ParseTxt(InputFileSettings,OutputFileSettings);
-//
-//        ConsoleUserInterface.SetOutputFileSettings(input, OutputFileSettings);
-//        ConsoleUserInterface.WriteOutputFile(OutputFileSettings,input);
 
-        MatchParserDirector matchParserDirector = new MatchParserDirector();
-        matchParserDirector.SetBuilder(new MatchParserByLib());
-
-        matchParserDirector.GetAnswer(InputFileSettings,OutputFileSettings);
+        ConsoleUserInterface.ParseMathematicalExpressions(InputFileSettings,OutputFileSettings,input);
 
         ConsoleUserInterface.SetOutputFileSettings(input, OutputFileSettings);
         ConsoleUserInterface.WriteOutputFile(OutputFileSettings, input);
