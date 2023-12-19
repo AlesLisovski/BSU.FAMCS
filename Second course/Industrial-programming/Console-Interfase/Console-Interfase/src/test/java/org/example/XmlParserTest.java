@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class XmlParserTest {
 
     @org.junit.jupiter.api.Test
-    void parseString() throws IOException, ParseException, ParserConfigurationException, SAXException {
+    void ParseStringByDOM() throws IOException, ParseException, ParserConfigurationException, SAXException {
         String str = """
                 4+3
                 1-1
@@ -39,7 +39,7 @@ class XmlParserTest {
     }
 
     @Test
-    void parseFile() throws IOException, ParseException, ParserConfigurationException, SAXException {
+    void ParseFileByDOM() throws IOException, ParseException, ParserConfigurationException, SAXException {
         String file_name = "test.xml";
         String str = """
                 4+3
@@ -69,5 +69,47 @@ class XmlParserTest {
 
         XmlParser parser = new XmlParser();
         assertEquals(parser.makeXml(str), xml_str);
+    }
+
+    @Test
+    void parseFileByReadingLineByLine() throws IOException {
+        String file_name = "test.xml";
+        String str = """
+                4+3
+                1-1
+                4*5
+                20/2*5
+                20/(2*5)
+                (2/2-1+2)*2
+                """;
+
+        XmlParser parser = new XmlParser();
+        assertEquals(str, parser.ParseFileByReadingLineByLine(file_name));
+    }
+
+    @Test
+    void parseStringByReadingLineByLine() throws Exception {
+        String str = """
+                4+3
+                1-1
+                4*5
+                20/2*5
+                20/(2*5)
+                (2/2-1+2)*2
+                """;
+
+        String xml_str = """
+                <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                <MathematicalEquations>
+                    <equation>4+3</equation>
+                    <equation>1-1</equation>
+                    <equation>4*5</equation>
+                    <equation>20/2*5</equation>
+                    <equation>20/(2*5)</equation>
+                    <equation>(2/2-1+2)*2</equation>
+                </MathematicalEquations>""";
+
+        XmlParser parser = new XmlParser();
+        assertEquals(parser.ParseStringByReadingLineByLine(xml_str), str);
     }
 }

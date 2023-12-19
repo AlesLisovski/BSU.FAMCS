@@ -10,7 +10,7 @@ class ArchiveAndEncryptedTest {
 
     @Test
     void readAndDecryptTxtFileFromArchive() throws Exception {
-        byte[] input_bytes = ArchiveManager.readBytesFromFileInFromArchive("test_encrypted_txt.zip", "test_encrypted.txt");
+        byte[] input_bytes = ArchiveManager.readBytesFromFileInArchive("test_encrypted_txt.zip", "test_encrypted.txt");
         input_bytes = FileEncryption.DecryptBytes(KEY, input_bytes);
         String result = FileOperations.BytesToString(input_bytes);
 
@@ -27,7 +27,7 @@ class ArchiveAndEncryptedTest {
 
     @Test
     void readAndDecryptJsonFileFromArchive() throws Exception {
-        byte[] input_bytes = ArchiveManager.readBytesFromFileInFromArchive("test_encrypted_json.zip", "test_encrypted.json");
+        byte[] input_bytes = ArchiveManager.readBytesFromFileInArchive("test_encrypted_json.zip", "test_encrypted.json");
         input_bytes = FileEncryption.DecryptBytes(KEY, input_bytes);
         String result = FileOperations.BytesToString(input_bytes);
 
@@ -60,7 +60,7 @@ class ArchiveAndEncryptedTest {
 
     @Test
     void readAndDecryptXmlFileFromArchive() throws Exception {
-        byte[] input_bytes = ArchiveManager.readBytesFromFileInFromArchive("test_encrypted_xml.zip", "test_encrypted.xml");
+        byte[] input_bytes = ArchiveManager.readBytesFromFileInArchive("test_encrypted_xml.zip", "test_encrypted.xml");
         input_bytes = FileEncryption.DecryptBytes(KEY, input_bytes);
         String result = FileOperations.BytesToString(input_bytes);
 

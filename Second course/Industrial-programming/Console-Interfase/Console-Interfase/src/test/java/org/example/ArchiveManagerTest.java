@@ -8,7 +8,7 @@ class ArchiveManagerTest {
 
     @Test
     void readTxtFileFromArchive() {
-        String result = ArchiveManager.readStringFromInFileFromArchive("test_txt.zip", "test.txt");
+        String result = ArchiveManager.readStringFromFileInArchive("test_txt.zip", "test.txt");
 
         String str = """
                 4+3
@@ -19,12 +19,12 @@ class ArchiveManagerTest {
                 (2/2-1+2)*2
                 """;
 
-        assertEquals(str,result);
+        assertEquals(str, result);
     }
 
     @Test
     void readJsonFileFromArchive() {
-        String result = ArchiveManager.readStringFromInFileFromArchive("test_json.zip", "test.json");
+        String result = ArchiveManager.readStringFromFileInArchive("test_json.zip", "test.json");
 
         String str = """
                 {
@@ -51,12 +51,12 @@ class ArchiveManagerTest {
                 }
                 """;
 
-        assertEquals(str,result);
+        assertEquals(str, result);
     }
 
     @Test
     void readXmlFileFromArchive() {
-        String result = ArchiveManager.readStringFromInFileFromArchive("test_xml.zip", "test.xml");
+        String result = ArchiveManager.readStringFromFileInArchive("test_xml.zip", "test.xml");
 
         String str = """
                 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -70,7 +70,6 @@ class ArchiveManagerTest {
                 </MathematicalEquations>
                 """;
 
-        assertEquals(str,result);
+        assertEquals(str, result);
     }
-
 }

@@ -7,7 +7,7 @@ import java.util.zip.ZipOutputStream;
 
 public class ArchiveManager {
 
-    public static String readStringFromInFileFromArchive(String archivePath, String filePath) {
+    public static String readStringFromFileInArchive(String archivePath, String filePath) {
         StringBuilder content = new StringBuilder();
 
         try {
@@ -38,7 +38,7 @@ public class ArchiveManager {
         return content.toString().replace("\r", "");
     }
 
-    public static byte[] readBytesFromFileInFromArchive(String archivePath, String filePath) {
+    public static byte[] readBytesFromFileInArchive(String archivePath, String filePath) {
         byte[] content = null;
 
         try {

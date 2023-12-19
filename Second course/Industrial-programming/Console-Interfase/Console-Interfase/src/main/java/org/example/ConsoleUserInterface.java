@@ -15,10 +15,10 @@ public class ConsoleUserInterface {
 
         System.out.println("Is the input file encrypted? (Y/n) ");
         check = input.nextLine();
-        InputFileSettings.check_file_encoding = check.equals("Y");
+        InputFileSettings.check_file_encrypted = check.equals("Y");
 
 
-        System.out.println("Enter input file type? (.txt/.xml/.json) ");
+        System.out.println("Enter input file type (.txt/.xml/.json) ");
         InputFileSettings.file_type = input.nextLine();
 
         if (!InputFileSettings.file_type.equals(".txt") && !InputFileSettings.file_type.equals(".json") && !InputFileSettings.file_type.equals(".xml")) {
@@ -30,8 +30,8 @@ public class ConsoleUserInterface {
             InputFileSettings.archive_name = input.nextLine();
         }
 
-        System.out.println("Enter input file :");
-        InputFileSettings.file_name = input.nextLine();
+        System.out.println("Enter input file(without file type) :");
+        InputFileSettings.file_name = input.nextLine() + InputFileSettings.file_type;
     }
 
     public static void SetOutputFileSettings(Scanner input, FileSettings OutputFileSettings) throws Exception {
@@ -41,9 +41,9 @@ public class ConsoleUserInterface {
 
         System.out.println("Is the output file encoded? (Y/n) ");
         check = input.nextLine();
-        OutputFileSettings.check_file_encoding = check.equals("Y");
+        OutputFileSettings.check_file_encrypted = check.equals("Y");
 
-        System.out.println("Enter output file type? (.txt/.xml/.json) ");
+        System.out.println("Enter output file type (.txt/.xml/.json) ");
         OutputFileSettings.file_type = input.nextLine();
 
         if (!OutputFileSettings.file_type.equals(".txt") && !OutputFileSettings.file_type.equals(".json") && !OutputFileSettings.file_type.equals(".xml")) {
@@ -55,8 +55,8 @@ public class ConsoleUserInterface {
             OutputFileSettings.archive_name = input.nextLine();
         }
 
-        System.out.println("Enter output file: ");
-        OutputFileSettings.file_name = input.nextLine();
+        System.out.println("Enter output file(without file type) : ");
+        OutputFileSettings.file_name = input.nextLine() + OutputFileSettings.file_type;
     }
 
     public static void ReadInputFile(FileSettings InputFileSettings, Scanner input) throws Exception {
@@ -64,57 +64,60 @@ public class ConsoleUserInterface {
         boolean xml_choice = true;
 
         if (InputFileSettings.file_type.equals(".json")) {
-            System.out.println("Select a parser for the json file: by json parser(Yes), or by reading line by line(no) (Y/n) ");
-            json_choice = input.nextLine().equals("Y");
+            System.out.println("Select a parser for the json file: by json parser(0), or by reading line by line(1) (Y/n) ");
+            String choice = input.nextLine();
+
+            switch (choice) {
+                case "0" -> json_choice = true;
+                case "1" -> json_choice = false;
+                default -> throw new IllegalStateException("Unexpected value: " + choice);
+            }
         }
 
         if (InputFileSettings.file_type.equals(".xml")) {
-            System.out.println("Select a parser for the xml file: by DOM(Yes), or by reading line by line(no) (Y/n) ");
-            xml_choice = input.nextLine().equals("Y");
+            System.out.println("Select a parser for the xml file: by DOM(0), or by reading line by line(1) (Y/n) ");
+            String choice = input.nextLine();
+
+            switch (choice) {
+                case "0" -> xml_choice = true;
+                case "1" -> xml_choice = false;
+                default -> throw new IllegalStateException("Unexpected value: " + choice);
+            }
         }
 
-        if (InputFileSettings.check_file_zip && InputFileSettings.check_file_encoding) {
-            System.out.println("Is the input file first archived and then encrypted(Yes) or vice versa(no)? (Y/n)");
-            String check = input.nextLine();
-            boolean input_archived_and_encrypted = check.equals("Y");
+        if (InputFileSettings.check_file_zip && InputFileSettings.check_file_encrypted) {
+            if (Objects.equals(InputFileSettings.file_type, ".txt")) {
+                InputFileSettings.byte_info = ArchiveManager.readBytesFromFileInArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
+                InputFileSettings.byte_info = FileEncryption.DecryptBytes(KEY, InputFileSettings.byte_info);
+                InputFileSettings.txt_info = FileOperations.BytesToString(InputFileSettings.byte_info);
+            } else if (Objects.equals(InputFileSettings.file_type, ".json")) {
+                InputFileSettings.byte_info = ArchiveManager.readBytesFromFileInArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
+                InputFileSettings.byte_info = FileEncryption.DecryptBytes(KEY, InputFileSettings.byte_info);
+                InputFileSettings.txt_info = FileOperations.BytesToString(InputFileSettings.byte_info);
 
-            if (input_archived_and_encrypted) {
-
-            } else {
-
-                if (Objects.equals(InputFileSettings.file_type, ".txt")) {
-                    InputFileSettings.byte_info = ArchiveManager.readBytesFromFileInFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
-                    InputFileSettings.byte_info = FileEncryption.DecryptBytes(KEY, InputFileSettings.byte_info);
-                    InputFileSettings.txt_info = FileOperations.BytesToString(InputFileSettings.byte_info);
-                } else if (Objects.equals(InputFileSettings.file_type, ".json")) {
-                    InputFileSettings.byte_info = ArchiveManager.readBytesFromFileInFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
-                    InputFileSettings.byte_info = FileEncryption.DecryptBytes(KEY, InputFileSettings.byte_info);
-                    InputFileSettings.txt_info = FileOperations.BytesToString(InputFileSettings.byte_info);
-
-                    JsonParser parser = new JsonParser();
-                    if (json_choice) {
-                        InputFileSettings.txt_info = parser.ParseStringByParser(InputFileSettings.txt_info);
-                    } else {
-                        InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
-                    }
-
-                    InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
-                } else if (Objects.equals(InputFileSettings.file_type, ".xml")) {
-                    InputFileSettings.byte_info = ArchiveManager.readBytesFromFileInFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
-                    InputFileSettings.byte_info = FileEncryption.DecryptBytes(KEY, InputFileSettings.byte_info);
-                    InputFileSettings.txt_info = FileOperations.BytesToString(InputFileSettings.byte_info);
-
-                    XmlParser parser = new XmlParser();
-                    if (xml_choice) {
-                        InputFileSettings.txt_info = parser.ParseStringByDOM(InputFileSettings.txt_info);
-                    } else {
-                        InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
-                    }
-
-                    InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
+                JsonParser parser = new JsonParser();
+                if (json_choice) {
+                    InputFileSettings.txt_info = parser.ParseStringByParser(InputFileSettings.txt_info);
+                } else {
+                    InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
                 }
+
+                InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
+            } else if (Objects.equals(InputFileSettings.file_type, ".xml")) {
+                InputFileSettings.byte_info = ArchiveManager.readBytesFromFileInArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
+                InputFileSettings.byte_info = FileEncryption.DecryptBytes(KEY, InputFileSettings.byte_info);
+                InputFileSettings.txt_info = FileOperations.BytesToString(InputFileSettings.byte_info);
+
+                XmlParser parser = new XmlParser();
+                if (xml_choice) {
+                    InputFileSettings.txt_info = parser.ParseStringByDOM(InputFileSettings.txt_info);
+                } else {
+                    InputFileSettings.txt_info = parser.ParseStringByReadingLineByLine(InputFileSettings.txt_info);
+                }
+
+                InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             }
-        } else if (InputFileSettings.check_file_encoding) {
+        } else if (InputFileSettings.check_file_encrypted) {
             if (Objects.equals(InputFileSettings.file_type, ".txt")) {
                 InputFileSettings.txt_info = FileEncryption.DecryptFileToString(KEY, InputFileSettings.file_name);
                 InputFileSettings.byte_info = FileEncryption.DecryptFileToBytes(KEY, InputFileSettings.file_name);
@@ -141,10 +144,10 @@ public class ConsoleUserInterface {
             }
         } else if (InputFileSettings.check_file_zip) {
             if (Objects.equals(InputFileSettings.file_type, ".txt")) {
-                InputFileSettings.txt_info = ArchiveManager.readStringFromInFileFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
-                InputFileSettings.byte_info = ArchiveManager.readBytesFromFileInFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
+                InputFileSettings.txt_info = ArchiveManager.readStringFromFileInArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
+                InputFileSettings.byte_info = ArchiveManager.readBytesFromFileInArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
             } else if (Objects.equals(InputFileSettings.file_type, ".json")) {
-                InputFileSettings.txt_info = ArchiveManager.readStringFromInFileFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
+                InputFileSettings.txt_info = ArchiveManager.readStringFromFileInArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
 
                 JsonParser parser = new JsonParser();
                 if (json_choice) {
@@ -154,7 +157,7 @@ public class ConsoleUserInterface {
                 }
                 InputFileSettings.byte_info = FileOperations.StringToBytes(InputFileSettings.txt_info);
             } else if (Objects.equals(InputFileSettings.file_type, ".xml")) {
-                InputFileSettings.txt_info = ArchiveManager.readStringFromInFileFromArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
+                InputFileSettings.txt_info = ArchiveManager.readStringFromFileInArchive(InputFileSettings.archive_name, InputFileSettings.file_name);
 
                 XmlParser parser = new XmlParser();
                 if (xml_choice) {
@@ -190,30 +193,22 @@ public class ConsoleUserInterface {
     }
 
     public static void WriteOutputFile(FileSettings OutputFileSettings, Scanner input) throws Exception {
-        if (OutputFileSettings.check_file_zip && OutputFileSettings.check_file_encoding) {
-            System.out.println("Is the output file first archived and then encrypted(Yes) or vice versa(no)? (Y/n)");
-            String check = input.nextLine();
-            boolean output_archived_and_encrypted = check.equals("Y");
-
-            if (output_archived_and_encrypted) {
-
-            } else {
+        if (OutputFileSettings.check_file_zip && OutputFileSettings.check_file_encrypted) {
+            ArchiveManager.writeBytesToArchive(FileEncryption.EncryptBytes(KEY, OutputFileSettings.byte_info), OutputFileSettings.archive_name, OutputFileSettings.file_name);
+            if (Objects.equals(OutputFileSettings.file_type, ".txt")) {
                 ArchiveManager.writeBytesToArchive(FileEncryption.EncryptBytes(KEY, OutputFileSettings.byte_info), OutputFileSettings.archive_name, OutputFileSettings.file_name);
-                if (Objects.equals(OutputFileSettings.file_type, ".txt")) {
-                    ArchiveManager.writeBytesToArchive(FileEncryption.EncryptBytes(KEY, OutputFileSettings.byte_info), OutputFileSettings.archive_name, OutputFileSettings.file_name);
-                } else if (Objects.equals(OutputFileSettings.file_type, ".json")) {
-                    JsonParser parser = new JsonParser();
+            } else if (Objects.equals(OutputFileSettings.file_type, ".json")) {
+                JsonParser parser = new JsonParser();
 
-                    OutputFileSettings.byte_info = FileOperations.StringToBytes(parser.makeJson(OutputFileSettings.txt_info));
-                    ArchiveManager.writeBytesToArchive(FileEncryption.EncryptBytes(KEY, OutputFileSettings.byte_info), OutputFileSettings.archive_name, OutputFileSettings.file_name);
-                } else if (Objects.equals(OutputFileSettings.file_type, ".xml")) {
-                    XmlParser parser = new XmlParser();
+                OutputFileSettings.byte_info = FileOperations.StringToBytes(parser.makeJson(OutputFileSettings.txt_info));
+                ArchiveManager.writeBytesToArchive(FileEncryption.EncryptBytes(KEY, OutputFileSettings.byte_info), OutputFileSettings.archive_name, OutputFileSettings.file_name);
+            } else if (Objects.equals(OutputFileSettings.file_type, ".xml")) {
+                XmlParser parser = new XmlParser();
 
-                    OutputFileSettings.byte_info = FileOperations.StringToBytes(parser.makeXml(OutputFileSettings.txt_info));
-                    ArchiveManager.writeBytesToArchive(FileEncryption.EncryptBytes(KEY, OutputFileSettings.byte_info), OutputFileSettings.archive_name, OutputFileSettings.file_name);
-                }
+                OutputFileSettings.byte_info = FileOperations.StringToBytes(parser.makeXml(OutputFileSettings.txt_info));
+                ArchiveManager.writeBytesToArchive(FileEncryption.EncryptBytes(KEY, OutputFileSettings.byte_info), OutputFileSettings.archive_name, OutputFileSettings.file_name);
             }
-        } else if (OutputFileSettings.check_file_encoding) {
+        } else if (OutputFileSettings.check_file_encrypted) {
             if (Objects.equals(OutputFileSettings.file_type, ".txt")) {
                 FileOperations.WriteBytesToFile(FileEncryption.EncryptBytes(KEY, OutputFileSettings.byte_info), OutputFileSettings.file_name);
             } else if (Objects.equals(OutputFileSettings.file_type, ".json")) {

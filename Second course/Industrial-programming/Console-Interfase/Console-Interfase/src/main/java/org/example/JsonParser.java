@@ -81,7 +81,6 @@ public class JsonParser {
     }
 
     public String ParseStringByReadingLineByLine(String jsonString) throws Exception {
-
         Pattern pattern = Pattern.compile("\"equation\": \"(.*?)\"");
         Matcher matcher = pattern.matcher(jsonString);
 

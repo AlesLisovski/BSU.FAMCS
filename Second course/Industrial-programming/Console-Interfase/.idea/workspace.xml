@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="03387716-6531-45b0-8891-0b7af5d14211" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/file_translator.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/file_translator.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/out.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/ArchiveManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/ArchiveManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/ConsoleUserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/ConsoleUserInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/FileOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/FileOperations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/FileSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/FileSettings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/JsonParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/JsonParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/MatchParserByRegular.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/MatchParserByRegular.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/MatchParserDirector.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/main/java/org/example/MatchParserDirector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/test/java/org/example/ArchiveAndEncryptedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/test/java/org/example/ArchiveAndEncryptedTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/test/java/org/example/ArchiveManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/test/java/org/example/ArchiveManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/test/java/org/example/JsonParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/test/java/org/example/JsonParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Console-Interfase/src/test/java/org/example/XmlParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Console-Interfase/src/test/java/org/example/XmlParserTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2ZlwsH9kMWuqZgasFOKsgTbi63m" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/alesl/source/repos/BSU.FAMCS/Second course/Industrial-programming/Console-Interfase"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="03387716-6531-45b0-8891-0b7af5d14211" name="Changes" comment="" />
+      <created>1703010178627</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1703010178627</updated>
+    </task>
+    <servers />
+  </component>
+</project>

@@ -7,6 +7,7 @@ public class FileOperations {
     public static byte[] readBytesFromFile(String input_File) throws IOException, Exception {
         File inputFile = new File(input_File);
         FileInputStream inputStream = new FileInputStream(inputFile);
+
         byte[] inputBytes = new byte[(int) inputFile.length()];
         inputStream.read(inputBytes);
 
@@ -42,10 +43,8 @@ public class FileOperations {
     }
 
     public static void WriteStringToFile(String text, String output_File) throws Exception {
-        try (FileWriter writer = new FileWriter(output_File)) {
-            writer.write(text);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+        FileWriter writer = new FileWriter(output_File);
+        writer.write(text);
+        writer.close();
     }
 }
