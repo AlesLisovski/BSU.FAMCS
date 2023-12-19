@@ -23,12 +23,12 @@ public class MatchParserByRegular extends MatchParserBuilder {
             }
             case '/' -> {
                 if (operand2 == 0) {
-                    throw new ArithmeticException("Деление на ноль!");
+                    throw new ArithmeticException("Division by zero!");
                 }
                 return operand1 / operand2;
             }
         }
-        throw new IllegalArgumentException("Неизвестный оператор: " + operator);
+        throw new IllegalArgumentException("Unknown operator: " + operator);
     }
 
     double calculate(String expression) {
@@ -73,7 +73,7 @@ public class MatchParserByRegular extends MatchParserBuilder {
                 operators.pop();
                 i++;
             } else {
-                throw new IllegalArgumentException("Недопустимый символ: " + ch);
+                throw new IllegalArgumentException("Invalid character: " + ch);
             }
         }
 

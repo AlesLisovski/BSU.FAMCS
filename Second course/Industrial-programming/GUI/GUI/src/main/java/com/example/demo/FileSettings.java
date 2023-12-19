@@ -6,6 +6,7 @@ public class FileSettings {
     String file_type;
     String archive_name;
     String file_name;
+    String key;
     String txt_info;
     byte[] byte_info;
 }

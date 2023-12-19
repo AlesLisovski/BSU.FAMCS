@@ -3,6 +3,10 @@ package com.example.demo;
 public class MatchParserDirector {
     MatchParserBuilder matchParserBuilder;
 
+    public MatchParserBuilder GetBuilder() {
+        return this.matchParserBuilder;
+    }
+
     public void SetBuilder(MatchParserBuilder matchParserBuilder) {
         this.matchParserBuilder = matchParserBuilder;
     }
