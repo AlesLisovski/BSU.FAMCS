@@ -108,7 +108,7 @@ public class Controller {
         OutputFileSettings.key = OutputKey.getText();
 
         try {
-            FileParser.ReadInputFile(InputFileSettings);
+            ProgramManager.ReadInputFile(InputFileSettings);
         } catch (FileNotFoundException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("File Not Found");
@@ -133,7 +133,7 @@ public class Controller {
         }
 
         try {
-            FileParser.ParseMathematicalExpressions(InputFileSettings, OutputFileSettings, ParseType);
+            ProgramManager.ParseMathematicalExpressions(InputFileSettings, OutputFileSettings, ParseType);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Math Parse Exception");
@@ -143,7 +143,7 @@ public class Controller {
         }
 
         try {
-            FileParser.WriteOutputFile(OutputFileSettings);
+            ProgramManager.WriteOutputFile(OutputFileSettings);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Exception");

@@ -64,7 +64,7 @@ public class ConsoleUserInterface {
         boolean xml_choice = true;
 
         if (InputFileSettings.file_type.equals(".json")) {
-            System.out.println("Select a parser for the json file: by json parser(0), or by reading line by line(1) (Y/n) ");
+            System.out.println("Select a parser for the json file: by json parser(0), or by reading line by line(1) (0/1) ");
             String choice = input.nextLine();
 
             switch (choice) {
@@ -75,7 +75,7 @@ public class ConsoleUserInterface {
         }
 
         if (InputFileSettings.file_type.equals(".xml")) {
-            System.out.println("Select a parser for the xml file: by DOM(0), or by reading line by line(1) (Y/n) ");
+            System.out.println("Select a parser for the xml file: by DOM(0), or by reading line by line(1) (0/1) ");
             String choice = input.nextLine();
 
             switch (choice) {
