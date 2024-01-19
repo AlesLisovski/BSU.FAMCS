@@ -1,0 +1,60 @@
+#include <thread>
+#include <vector>
+#include <mutex>
+#include <iostream>
+
+void min_max(int& min, int& max, std::vector<int> vec)
+{
+	if (vec.size() == 0)
+	{
+		min = 0;
+		max = 0;
+		return;
+	}
+	else if (vec.size() == 1)
+	{
+		min = vec[0];
+		max = vec[0];
+		return;
+	}
+	int size = vec.size();
+	min = vec[0];
+	max = vec[1];
+
+
+	for (int i = 0; i < size; i++)
+	{
+		if (vec[i] > max)
+		{
+			max = vec[i];
+
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(7));
+
+		if (vec[i] < min)
+		{
+			min = vec[i];
+
+
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(7));
+	}
+}
+
+void Average(int& average, std::vector<int> vec)
+{
+	if (vec.size() == 0)
+	{
+		average = 0;
+		return;
+	}
+
+	int size = vec.size();
+	for (int i = 0; i < size; i++)
+	{
+		average += vec[i];
+		std::this_thread::sleep_for(std::chrono::milliseconds(12));
+	}
+
+	average /= size;
+}
